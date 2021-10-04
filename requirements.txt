@@ -1,0 +1,4 @@
+pypxlib
+requests
+watchdog
+websockets
