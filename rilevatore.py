@@ -6,18 +6,21 @@ import threading
 import requests
 import logging
 
-logging.basicConfig(level=logging.INFO)
-
-# Install pypxlib, watchdog
 
 data_project_dir = "C:/Data Project/Data Volley 4/Data/"
 prod_ip = "192.168.1.121:8000"
 dev_ip = "192.168.1.10:7000"
+
+
 is_dev = len(sys.argv) > 1
 if is_dev:
     print("Development")
+    ip = dev_ip
 else:
+    ip = prod_ip
     print("Production")
+
+logging.basicConfig(level=logging.INFO)
 
 # Timer con ritardo all'innesco, riarmabile
 class MyTimer:
@@ -36,13 +39,13 @@ class MyTimer:
 def timer_callback():
     # Informo l'altro pc che ci sono nuovi dati
     try:
-        requests.head(f"http://{dev_ip if is_dev else prod_ip}", timeout=2)
+        requests.head(f"http://{ip}", timeout=2)
         print("Richiesta HEAD successo")
     except:
         print("Richiesta HEAD errore")
 
-
 timer = MyTimer(2, timer_callback)
+
 
 # Reagisce ai cambiamenti dei file
 class MyHandler(FileSystemEventHandler):
