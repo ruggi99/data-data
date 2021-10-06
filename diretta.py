@@ -35,7 +35,7 @@ def download_files():
             except:
                 pass
             continue
-        # Se non esiste il file, ne viene creato uno vuoto   
+        # Se non esiste il file, ne viene creato uno vuoto
         with open(os.path.expanduser("~/") + file, "wb") as f:
             if r.status_code == 200:
                 f.write(r.content)
@@ -107,7 +107,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         print("Clienti collegati:", len(CLIENTS))
         websockets.broadcast(CLIENTS.copy(), punteggio())
 
-httpd = http.server.HTTPServer(("0.0.0.0", 8000), Handler)
+httpd = http.server.HTTPServer(("0.0.0.0", 7000), Handler)
 
 # Fa il download e apre i file automaticamente
 download_files()
