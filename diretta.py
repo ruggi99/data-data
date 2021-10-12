@@ -12,6 +12,8 @@ import logging
 files = ["TElenco.DB", "TNote.DB", "TRilev.DB", "LstSubH.dat", "LstSubV.dat"]
 tables = {"TElenco.DB": None, "TNote.DB": None, "TRilev.DB": None}
 
+points = None
+
 def open_tables():
     for table in tables:
         if os.path.exists(os.path.expanduser("~/") + table):
@@ -40,6 +42,28 @@ def download_files():
             if r.status_code == 200:
                 f.write(r.content)
     open_tables()
+    global points
+    print("inizio ciclo")
+    if tables["TRilev.DB"]:
+        points = [{"Cognome": x["Cognome"], "Nome": x["Nome"], "Punti": 0, "CodSq": x["CodSq"], "Pet": x["Pet"], "Prog": x["Prog"]} for x in table_to_json(tables["TElenco.DB"])]
+        points_tmp = dict()
+        for row in tables["TRilev.DB"]:
+            codice = row["Codice"]
+            if codice[3:4] == "A" and codice[5:6] == "#" or \
+                codice[3:4] == "B" and codice[5:6] == "#" or \
+                codice[3:4] == "S" and codice[5:6] == "#":
+                if codice[0:3] not in points_tmp:
+                    points_tmp[codice[0:3]] = 0
+                points_tmp[codice[0:3]] = points_tmp[codice[0:3]] + 1
+        print(points_tmp)
+        for key in points_tmp:
+            value = points_tmp[key]
+            giocatore = next(filter(lambda g: g["Pet"] == int(key[1:3]) and ((g["CodSq"] == "0") == (key[0:1] == "*")), points), None)
+            indice = points.index(giocatore)
+            points[indice]["Punti"] = value
+    else:
+        points = None
+    print("fine ciclo")
     print("Download file completato")
 
 # paths = ["/punteggio"]
@@ -81,7 +105,7 @@ def hex_to_string(hex):
 def punteggio():
     if tables["TElenco.DB"] is None or tables["TNote.DB"] is None:
         return json.dumps(None)
-    return json.dumps({"elenco": table_to_json(tables["TElenco.DB"]), "note": row_to_json(tables["TNote.DB"][0])})
+    return json.dumps({"elenco": table_to_json(tables["TElenco.DB"]), "note": row_to_json(tables["TNote.DB"][0]), "punti": points})
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -144,8 +168,8 @@ logging.basicConfig(level=logging.INFO)
 print("Server Websocket attivo")
 try:
     asyncio.run(main())
-except:
-    pass
+except Exception as e:
+    print(e)
 
 print("Fermo server HTTP")
 
