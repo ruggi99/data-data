@@ -109,18 +109,6 @@ def punteggio():
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
-    # def do_GET(self):
-    #     if not self.path in paths:
-    #         self.send_error(404)
-    #         print(f"Path non riconosciuto - {self.path}")
-    #         return
-    #     self.send_response(200)
-    #     self.send_header('Access-Control-Allow-Origin', '*')
-    #     self.send_header("Content-type", "application/json")
-    #     self.end_headers()
-    #     if self.path == "/punteggio":
-    #         self.wfile.write(json.dumps({"elenco": table_to_json(tables["TElenco.DB"]), "note": row_to_json(tables["TNote.DB"][0])}).encode())
-    #     print("Messaggio di controllo")
     def do_HEAD(self):
         print("HEAD", self.path)
         self.send_response(200)
