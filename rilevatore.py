@@ -8,8 +8,8 @@ import logging
 
 
 data_project_dir = "C:/Data Project/Data Volley 4/Data/"
-prod_ip = "192.168.1.11:7000"
-dev_ip = "192.168.1.10:7000"
+prod_ip = "192.168.0.11:8000"
+dev_ip = "192.168.1.10:8000"
 
 
 is_dev = len(sys.argv) > 1
