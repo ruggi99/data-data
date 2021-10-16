@@ -8,7 +8,7 @@ import logging
 
 
 data_project_dir = "C:/Data Project/Data Volley 4/Data/"
-prod_ip = "192.168.1.121:8000"
+prod_ip = "192.168.1.11:7000"
 dev_ip = "192.168.1.10:7000"
 
 
@@ -63,7 +63,7 @@ class MyServerHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=data_project_dir, **kwargs)
 
-httpd = http.server.HTTPServer(("0.0.0.0", 8000), MyServerHandler)
+httpd = http.server.HTTPServer(("0.0.0.0", 7000), MyServerHandler)
 
 # Notifico che sono pronto
 timer_callback()
