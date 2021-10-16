@@ -86,7 +86,7 @@ def download_files():
             points[indice]["Punti"] = value
     else:
         points = None
-    with open(os.path.expanduser("~/") + "luogo.txt", "w") as f:
+    with open("C:/Bolghera/luogo.txt", "w") as f:
         f.write(hex_to_string(tables["TNote.DB"][0].Citta))
     print("fine ciclo")
     print("Download file completato")
