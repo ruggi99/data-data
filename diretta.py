@@ -149,7 +149,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         print("Clienti collegati:", len(CLIENTS))
         websockets.broadcast(CLIENTS.copy(), punteggio())
 
-httpd = http.server.HTTPServer(("0.0.0.0", 7000), Handler)
+httpd = http.server.HTTPServer(("0.0.0.0", 8000), Handler)
 
 # Fa il download e apre i file automaticamente
 download_files()
