@@ -1,6 +1,7 @@
 import http.server
 import requests
 import os
+import sys
 from pypxlib import Table
 import json
 import datetime
@@ -8,6 +9,17 @@ import asyncio
 import websockets
 import threading
 import logging
+
+prod_ip = "http://192.168.0.10:7000"
+dev_ip = "http://192.168.1.10:7000"
+
+is_dev = len(sys.argv) > 1
+if is_dev:
+    print("Development")
+    ip = dev_ip
+else:
+    print("Production")
+    ip = prod_ip
 
 files = ["TElenco.DB", "TNote.DB", "TRilev.DB", "LstSubH.dat", "LstSubV.dat"]
 tables = {"TElenco.DB": None, "TNote.DB": None, "TRilev.DB": None}
@@ -31,7 +43,7 @@ def download_files():
     print("Comincio download files")
     for file in files:
         try:
-            r = requests.get(f"http://192.168.1.10:8000/{file}", timeout=2)
+            r = requests.get(f"{ip}/{file}", timeout=2)
         except:
             try:
                 os.remove(os.path.expanduser("~/") + file)
