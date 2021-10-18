@@ -148,7 +148,11 @@ crea_montaggio(squadra="*", numero="10", fond="E", rot="5", rice="cattiva", star
 crea_montaggio(squadra="*", numero="10", fond="E", rot="6", rice="cattiva", start=1, end=1, nome="Dist Rot6 Rice cattiva")
 
 # Attacchi avversari
-crea_montaggio(squadra="a", fond="A", nome="Attacco avversario")
+crea_montaggio(squadra="a", fond="A", zonaP="9", nome="Attacco avversario Z1")
+crea_montaggio(squadra="a", fond="A", zonaP="2", nome="Attacco avversario Z2")
+crea_montaggio(squadra="a", fond="A", zonaP="3", nome="Attacco avversario Z3")
+crea_montaggio(squadra="a", fond="A", zonaP="4", nome="Attacco avversario Z4")
+crea_montaggio(squadra="a", fond="A", zonaP="8", nome="Attacco avversario Z6")
 
 rilev.close()
 elenco.close()
