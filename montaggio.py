@@ -3,7 +3,13 @@ import datetime
 import ffmpeg
 import os
 import shutil
+import sys
 
+if len(sys.argv) < 2:
+    print("Inserire video input")
+    exit()
+
+video = sys.argv[1]
 
 data_project_dir = "C:/Data Project/Data Volley 4/Data/"
 video_dir = "V:/Ruggi/Videos/Bolghera/"
@@ -89,7 +95,7 @@ def crea_montaggio(**kwargs):
         if rice and rice == "cattiva" and rilev[i-1].Codice[5] not in "!-":
             continue
         print(codice)
-        stream = ffmpeg.input(video_dir + "Amichevole TNV 1.mp4", ss=value.Millisec + start, t=4 + end)
+        stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, t=4 + end)
         stream = ffmpeg.output(stream, video_dir_tmp + f"{nome}_{counter}.mp4", vcodec="copy")
         ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
         counter = counter + 1
