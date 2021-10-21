@@ -87,7 +87,10 @@ def download_files():
     else:
         points = None
     with open("C:/Bolghera/luogo.txt", "w") as f:
-        f.write(hex_to_string(tables["TNote.DB"][0].Citta))
+        if tables["TNote.DB"][0].Citta:
+            f.write(hex_to_string(tables["TNote.DB"][0].Citta))
+        else:
+            f.write("Non definito")
     print("fine ciclo")
     print("Download file completato")
 
