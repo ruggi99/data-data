@@ -62,6 +62,10 @@ def download_files():
         points_tmp = dict()
         for row in tables["TRilev.DB"]:
             codice = row["Codice"]
+            try:
+                int(codice[1:3])
+            except:
+                continue
             if codice[3:4] == "A" and codice[5:6] == "#" or \
                 codice[3:4] == "B" and codice[5:6] == "#" or \
                 codice[3:4] == "S" and codice[5:6] == "#":
