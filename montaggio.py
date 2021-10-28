@@ -66,13 +66,15 @@ def crea_montaggio(**kwargs):
     zonaP = kwargs.get("zonaP", False)
     start = kwargs.get("start", 0)
     end = kwargs.get("end", 0)
+    set = kwargs.get("set", 0)
     nome = kwargs.get("nome", "video")
     max_counter = kwargs.get("max_counter", False)
     rot = kwargs.get("rot", False)
     rice = kwargs.get("rice", False)
+    fine_azione = kwargs.get("fine_azione", False)
     for i, value in enumerate(rilev):
         if max_counter and counter >= max_counter:
-            return
+            break
         codice = value.Codice
         try:
             int(codice[1:3])
@@ -90,12 +92,34 @@ def crea_montaggio(**kwargs):
             continue
         if rot and value.ZPagg0 != rot:
             continue
+        if rice and rilev[i-1].Codice[3] != "R":
+            continue
         if rice and rice == "buona" and rilev[i-1].Codice[5] not in "#+":
             continue
         if rice and rice == "cattiva" and rilev[i-1].Codice[5] not in "!-":
             continue
+        if fine_azione:
+            i2 = i
+            while True:
+                codice2 = rilev[i2].Codice
+                if codice2[1] == "p":
+                    break
+                i2 += 1
+            t_fine_azione = rilev[i2].Millisec
+        else:
+            t_fine_azione = 4
+        if set:
+            if isinstance(set, list):
+                if value.Tempo not in set:
+                    continue
+            else:
+                if value.Tempo != set:
+                    continue
         print(codice)
-        stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, t=4 + end)
+        if not fine_azione:
+            stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, t=t_fine_azione + end, hide_banner=None)
+        else:
+            stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, to=t_fine_azione + end, hide_banner=None)
         stream = ffmpeg.output(stream, video_dir_tmp + f"{nome}_{counter}.mp4", vcodec="copy")
         ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
         counter = counter + 1
@@ -105,7 +129,7 @@ def crea_montaggio(**kwargs):
     with open(video_dir_tmp + "list.txt", "w") as f:
         for i in range(counter):
             f.write(f"file '{nome}_{i}.mp4'\n")
-    stream = ffmpeg.input(video_dir_tmp + "list.txt", f="concat", safe="0")
+    stream = ffmpeg.input(video_dir_tmp + "list.txt", f="concat", safe="0", hide_banner=None)
     stream = ffmpeg.output(stream, video_dir + f"{nome}.mp4", vcodec="copy")
     print(ffmpeg.compile(stream))
     ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
