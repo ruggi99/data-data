@@ -135,28 +135,6 @@ def crea_montaggio(**kwargs):
     ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
     shutil.rmtree(video_dir_tmp, ignore_errors=True)
 
-# Attacchi per giocatore
-crea_montaggio(squadra="*", numero="01", fond="A", nome="Attacco Cristofaletti")
-crea_montaggio(squadra="*", numero="02", fond="A", nome="Attacco Nanfito")
-crea_montaggio(squadra="*", numero="03", fond="A", nome="Attacco Bressan")
-crea_montaggio(squadra="*", numero="04", fond="A", nome="Attacco Coser")
-crea_montaggio(squadra="*", numero="07", fond="A", nome="Attacco Bridi")
-crea_montaggio(squadra="*", numero="08", fond="A", nome="Attacco Delladio")
-crea_montaggio(squadra="*", numero="09", fond="A", nome="Attacco Hueller")
-crea_montaggio(squadra="*", numero="14", fond="A", nome="Attacco Paoli")
-crea_montaggio(squadra="*", numero="15", fond="A", nome="Attacco Polacco")
-crea_montaggio(squadra="*", numero="16", fond="A", nome="Attacco Dietre")
-crea_montaggio(squadra="*", numero="18", fond="A", nome="Attacco Gasperi")
-
-# Ricezioni per giocatore
-crea_montaggio(squadra="*", numero="01", fond="R", end=1, nome="Ricezione Cristofaletti")
-crea_montaggio(squadra="*", numero="02", fond="R", end=1, nome="Ricezione Nanfito")
-crea_montaggio(squadra="*", numero="04", fond="R", end=1, nome="Ricezione Coser")
-crea_montaggio(squadra="*", numero="11", fond="R", end=1, nome="Ricezione Pedrolli")
-crea_montaggio(squadra="*", numero="15", fond="R", end=1, nome="Ricezione Polacco")
-crea_montaggio(squadra="*", numero="16", fond="R", end=1, nome="Ricezione Dietre")
-crea_montaggio(squadra="*", numero="17", fond="R", end=1, nome="Ricezione Thei")
-
 # Distribuzione su ricezione
 crea_montaggio(squadra="*", numero="10", fond="E", rot="1", rice="buona", start=1, end=1, nome="Dist Rot1 Rice buona")
 crea_montaggio(squadra="*", numero="10", fond="E", rot="2", rice="buona", start=1, end=1, nome="Dist Rot2 Rice buona")
@@ -176,7 +154,15 @@ crea_montaggio(squadra="a", fond="A", zonaP="9", nome="Attacco avversario Z1")
 crea_montaggio(squadra="a", fond="A", zonaP="2", nome="Attacco avversario Z2")
 crea_montaggio(squadra="a", fond="A", zonaP="3", nome="Attacco avversario Z3")
 crea_montaggio(squadra="a", fond="A", zonaP="4", nome="Attacco avversario Z4")
+crea_montaggio(squadra="a", fond="A", zonaP="7", nome="Attacco avversario Z5")
 crea_montaggio(squadra="a", fond="A", zonaP="8", nome="Attacco avversario Z6")
+
+# Montaggi per set
+crea_montaggio(fond="S", set=1, fine_azione=True, nome="Primo set")
+crea_montaggio(fond="S", set=2, fine_azione=True, nome="Secondo set")
+crea_montaggio(fond="S", set=3, fine_azione=True, nome="Terzo set")
+crea_montaggio(fond="S", set=4, fine_azione=True, nome="Quarto set")
+crea_montaggio(fond="S", set=5, fine_azione=True, nome="Quinto set")
 
 rilev.close()
 elenco.close()
