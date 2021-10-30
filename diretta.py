@@ -90,8 +90,9 @@ def download_files():
             points[indice]["Punti"] = value
     else:
         points = None
+        last_points = None
     with open("C:/Bolghera/luogo.txt", "w") as f:
-        if tables["TNote.DB"][0].Citta:
+        if tables["TNote.DB"] and tables["TNote.DB"][0].Citta:
             f.write(hex_to_string(tables["TNote.DB"][0].Citta))
         else:
             f.write("Non definito")
