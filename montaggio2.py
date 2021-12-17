@@ -54,11 +54,13 @@ def table_to_json(table):
         arr.append(row_to_json(row))
     return arr
 
+
 def hex_to_string(hex):
     arr = []
     for i in range(2, len(hex), 2):
         arr.append(chr(int(hex[i : i + 2], 16)))
     return "".join(arr)
+
 
 def crea_montaggio(array, **kwargs):
     squadra = kwargs.get("squadra", False)
@@ -82,7 +84,7 @@ def crea_montaggio(array, **kwargs):
         except:
             pass
         os.mkdir(video_dir_tmp)
-        cognome = hex_to_string(giocatori[chiave].Cognome)
+        cognome = hex_to_string(giocatori[chiave].Cognome).replace("'", "")
         cognome = cognome[0].upper() + cognome[1:].lower()
         for i, value in enumerate(array[chiave]):
             if max_counter and counter >= max_counter:
@@ -102,9 +104,9 @@ def crea_montaggio(array, **kwargs):
                 continue
             if rot and value.ZPagg0 != rot:
                 continue
-            if rice and rice == "buona" and rilev[i-1].Codice[5] not in "#+":
+            if rice and rice == "buona" and rilev[i - 1].Codice[5] not in "#+":
                 continue
-            if rice and rice == "cattiva" and rilev[i-1].Codice[5] not in "!-":
+            if rice and rice == "cattiva" and rilev[i - 1].Codice[5] not in "!-":
                 continue
             if fine_azione:
                 t_fine_azione = array[chiave + "p"][i]
@@ -119,10 +121,22 @@ def crea_montaggio(array, **kwargs):
                         continue
             print(codice)
             if not fine_azione:
-                stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, t=t_fine_azione + end, hide_banner=None)
+                stream = ffmpeg.input(
+                    video_dir + video,
+                    ss=value.Millisec + start,
+                    t=t_fine_azione + end,
+                    hide_banner=None,
+                )
             else:
-                stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, to=t_fine_azione + end, hide_banner=None)
-            stream = ffmpeg.output(stream, video_dir_tmp + f"{nome} {cognome}_{counter}.mp4", vcodec="copy")
+                stream = ffmpeg.input(
+                    video_dir + video,
+                    ss=value.Millisec + start,
+                    to=t_fine_azione + end,
+                    hide_banner=None,
+                )
+            stream = ffmpeg.output(
+                stream, video_dir_tmp + f"{nome} {cognome}_{counter}.mp4", vcodec="copy"
+            )
             print(ffmpeg.compile(stream))
             ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
             counter = counter + 1
@@ -132,12 +146,17 @@ def crea_montaggio(array, **kwargs):
         with open(video_dir_tmp + "list.txt", "w") as f:
             for i in range(counter):
                 f.write(f"file '{nome} {cognome}_{i}.mp4'\n")
-        stream = ffmpeg.input(video_dir_tmp + "list.txt", f="concat", safe="0", hide_banner=None)
-        stream = ffmpeg.output(stream, video_dir + f"{nome} {cognome}.mp4", vcodec="copy")
+        stream = ffmpeg.input(
+            video_dir_tmp + "list.txt", f="concat", safe="0", hide_banner=None
+        )
+        stream = ffmpeg.output(
+            stream, video_dir + f"{nome} {cognome}.mp4", vcodec="copy"
+        )
         print(ffmpeg.compile(stream))
         ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
         shutil.rmtree(video_dir_tmp, ignore_errors=True)
         # exit()
+
 
 for value in elenco:
     numero = ("0" if value.Pet < 10 else "") + str(value.Pet)
@@ -178,6 +197,8 @@ crea_montaggio(battute, start=0, end=1, nome="Battuta")
 crea_montaggio(ricezioni, start=1, end=1, nome="Ricezione")
 
 crea_montaggio(attacchi, nome="Attacco")
+
+print("\x1b[32mSuccesso!\x1b[0m")
 
 rilev.close()
 elenco.close()

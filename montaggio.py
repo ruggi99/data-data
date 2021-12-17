@@ -19,6 +19,7 @@ rilev = Table(data_project_dir + "TRilev.DB")
 elenco = Table(data_project_dir + "TElenco.DB")
 note = Table(data_project_dir + "TNote.DB")
 
+
 def row_to_json(row):
     obj = {}
     for field_name in row._table.fields:
@@ -46,11 +47,13 @@ def table_to_json(table):
         arr.append(row_to_json(row))
     return arr
 
+
 def hex_to_string(hex):
     arr = []
     for i in range(2, len(hex), 2):
         arr.append(chr(int(hex[i : i + 2], 16)))
     return "".join(arr)
+
 
 def crea_montaggio(**kwargs):
     try:
@@ -70,6 +73,7 @@ def crea_montaggio(**kwargs):
     nome = kwargs.get("nome", "video")
     max_counter = kwargs.get("max_counter", False)
     rot = kwargs.get("rot", False)
+    aRot = kwargs.get("aRot", False)
     rice = kwargs.get("rice", False)
     fine_azione = kwargs.get("fine_azione", False)
     for i, value in enumerate(rilev):
@@ -92,11 +96,13 @@ def crea_montaggio(**kwargs):
             continue
         if rot and value.ZPagg0 != rot:
             continue
-        if rice and rilev[i-1].Codice[3] != "R":
+        if aRot and value.ZPagg1 != aRot:
             continue
-        if rice and rice == "buona" and rilev[i-1].Codice[5] not in "#+":
+        if rice and rilev[i - 1].Codice[3] != "R":
             continue
-        if rice and rice == "cattiva" and rilev[i-1].Codice[5] not in "!-":
+        if rice and rice == "buona" and rilev[i - 1].Codice[5] not in "#+":
+            continue
+        if rice and rice == "cattiva" and rilev[i - 1].Codice[5] not in "!-":
             continue
         if fine_azione:
             i2 = i
@@ -117,10 +123,22 @@ def crea_montaggio(**kwargs):
                     continue
         print(codice)
         if not fine_azione:
-            stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, t=t_fine_azione + end, hide_banner=None)
+            stream = ffmpeg.input(
+                video_dir + video,
+                ss=value.Millisec + start,
+                t=t_fine_azione + end,
+                hide_banner=None,
+            )
         else:
-            stream = ffmpeg.input(video_dir + video, ss=value.Millisec + start, to=t_fine_azione + end, hide_banner=None)
-        stream = ffmpeg.output(stream, video_dir_tmp + f"{nome}_{counter}.mp4", vcodec="copy")
+            stream = ffmpeg.input(
+                video_dir + video,
+                ss=value.Millisec + start,
+                to=t_fine_azione + end,
+                hide_banner=None,
+            )
+        stream = ffmpeg.output(
+            stream, video_dir_tmp + f"{nome}_{counter}.mp4", vcodec="copy"
+        )
         ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
         counter = counter + 1
     if counter == 0:
@@ -129,12 +147,16 @@ def crea_montaggio(**kwargs):
     with open(video_dir_tmp + "list.txt", "w") as f:
         for i in range(counter):
             f.write(f"file '{nome}_{i}.mp4'\n")
-    stream = ffmpeg.input(video_dir_tmp + "list.txt", f="concat", safe="0", hide_banner=None)
+    stream = ffmpeg.input(
+        video_dir_tmp + "list.txt", f="concat", safe="0", hide_banner=None
+    )
     stream = ffmpeg.output(stream, video_dir + f"{nome}.mp4", vcodec="copy")
     print(ffmpeg.compile(stream))
     ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
     shutil.rmtree(video_dir_tmp, ignore_errors=True)
 
+
+# fmt: off
 # Distribuzione su ricezione
 crea_montaggio(squadra="*", numero="10", fond="E", rot="1", rice="buona", start=1, end=1, nome="Dist Rot1 Rice buona")
 crea_montaggio(squadra="*", numero="10", fond="E", rot="2", rice="buona", start=1, end=1, nome="Dist Rot2 Rice buona")
@@ -163,6 +185,32 @@ crea_montaggio(fond="S", set=2, fine_azione=True, nome="Secondo set")
 crea_montaggio(fond="S", set=3, fine_azione=True, nome="Terzo set")
 crea_montaggio(fond="S", set=4, fine_azione=True, nome="Quarto set")
 crea_montaggio(fond="S", set=5, fine_azione=True, nome="Quinto set")
+
+# Attacco avversario Zona 1 P
+crea_montaggio(squadra="a", fond="A", zonaP="1", rot="1", nome="Attacco avversario Z1 P1")
+crea_montaggio(squadra="a", fond="A", zonaP="1", rot="2", nome="Attacco avversario Z1 P2")
+crea_montaggio(squadra="a", fond="A", zonaP="1", rot="3", nome="Attacco avversario Z1 P3")
+crea_montaggio(squadra="a", fond="A", zonaP="1", rot="4", nome="Attacco avversario Z1 P4")
+crea_montaggio(squadra="a", fond="A", zonaP="1", rot="5", nome="Attacco avversario Z1 P5")
+crea_montaggio(squadra="a", fond="A", zonaP="1", rot="6", nome="Attacco avversario Z1 P6")
+
+# Attacco avversario Zona 2 P
+crea_montaggio(squadra="a", fond="A", zonaP="2", rot="1", nome="Attacco avversario Z2 P1")
+crea_montaggio(squadra="a", fond="A", zonaP="2", rot="2", nome="Attacco avversario Z2 P2")
+crea_montaggio(squadra="a", fond="A", zonaP="2", rot="3", nome="Attacco avversario Z2 P3")
+crea_montaggio(squadra="a", fond="A", zonaP="2", rot="4", nome="Attacco avversario Z2 P4")
+crea_montaggio(squadra="a", fond="A", zonaP="2", rot="5", nome="Attacco avversario Z2 P5")
+crea_montaggio(squadra="a", fond="A", zonaP="2", rot="6", nome="Attacco avversario Z2 P6")
+
+# Attacco avversario Zona 4 P
+crea_montaggio(squadra="a", fond="A", zonaP="4", rot="1", nome="Attacco avversario Z4 P1")
+crea_montaggio(squadra="a", fond="A", zonaP="4", rot="2", nome="Attacco avversario Z4 P2")
+crea_montaggio(squadra="a", fond="A", zonaP="4", rot="3", nome="Attacco avversario Z4 P3")
+crea_montaggio(squadra="a", fond="A", zonaP="4", rot="4", nome="Attacco avversario Z4 P4")
+crea_montaggio(squadra="a", fond="A", zonaP="4", rot="5", nome="Attacco avversario Z4 P5")
+crea_montaggio(squadra="a", fond="A", zonaP="4", rot="6", nome="Attacco avversario Z4 P6")
+
+# fmt: on
 
 rilev.close()
 elenco.close()

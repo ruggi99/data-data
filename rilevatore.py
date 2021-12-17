@@ -35,6 +35,7 @@ class MyTimer:
         self.timer = threading.Timer(self.interval, self.callback)
         self.timer.start()
 
+
 # Callback del timer
 def timer_callback():
     # Informo l'altro pc che ci sono nuovi dati
@@ -43,6 +44,7 @@ def timer_callback():
         print("Richiesta HEAD successo")
     except:
         print("Richiesta HEAD errore")
+
 
 timer = MyTimer(2, timer_callback)
 
@@ -53,6 +55,7 @@ class MyHandler(FileSystemEventHandler):
         if event.src_path == f"{data_project_dir}PARTWIN3.TOT":
             timer.start()
 
+
 event_handler = MyHandler()
 observer = Observer()
 observer.schedule(event_handler, data_project_dir, False)
@@ -62,6 +65,7 @@ observer.start()
 class MyServerHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=data_project_dir, **kwargs)
+
 
 httpd = http.server.HTTPServer(("0.0.0.0", 7000), MyServerHandler)
 
