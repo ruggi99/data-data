@@ -156,20 +156,22 @@ def crea_montaggio(**kwargs):
     shutil.rmtree(video_dir_tmp, ignore_errors=True)
 
 
+pall = "03"
+
 # fmt: off
 # Distribuzione su ricezione
-crea_montaggio(squadra="*", numero="10", fond="E", rot="1", rice="buona", start=1, end=1, nome="Dist Rot1 Rice buona")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="2", rice="buona", start=1, end=1, nome="Dist Rot2 Rice buona")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="3", rice="buona", start=1, end=1, nome="Dist Rot3 Rice buona")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="4", rice="buona", start=1, end=1, nome="Dist Rot4 Rice buona")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="5", rice="buona", start=1, end=1, nome="Dist Rot5 Rice buona")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="6", rice="buona", start=1, end=1, nome="Dist Rot6 Rice buona")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="1", rice="cattiva", start=1, end=1, nome="Dist Rot1 Rice cattiva")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="2", rice="cattiva", start=1, end=1, nome="Dist Rot2 Rice cattiva")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="3", rice="cattiva", start=1, end=1, nome="Dist Rot3 Rice cattiva")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="4", rice="cattiva", start=1, end=1, nome="Dist Rot4 Rice cattiva")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="5", rice="cattiva", start=1, end=1, nome="Dist Rot5 Rice cattiva")
-crea_montaggio(squadra="*", numero="10", fond="E", rot="6", rice="cattiva", start=1, end=1, nome="Dist Rot6 Rice cattiva")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="1", rice="buona", start=1, end=1, nome="Dist Rot1 Rice buona")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="2", rice="buona", start=1, end=1, nome="Dist Rot2 Rice buona")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="3", rice="buona", start=1, end=1, nome="Dist Rot3 Rice buona")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="4", rice="buona", start=1, end=1, nome="Dist Rot4 Rice buona")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="5", rice="buona", start=1, end=1, nome="Dist Rot5 Rice buona")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="6", rice="buona", start=1, end=1, nome="Dist Rot6 Rice buona")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="1", rice="cattiva", start=1, end=1, nome="Dist Rot1 Rice cattiva")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="2", rice="cattiva", start=1, end=1, nome="Dist Rot2 Rice cattiva")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="3", rice="cattiva", start=1, end=1, nome="Dist Rot3 Rice cattiva")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="4", rice="cattiva", start=1, end=1, nome="Dist Rot4 Rice cattiva")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="5", rice="cattiva", start=1, end=1, nome="Dist Rot5 Rice cattiva")
+crea_montaggio(squadra="*", numero=pall, fond="E", rot="6", rice="cattiva", start=1, end=1, nome="Dist Rot6 Rice cattiva")
 
 # Attacchi avversari
 crea_montaggio(squadra="a", fond="A", zonaP="9", nome="Attacco avversario Z1")
