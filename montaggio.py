@@ -4,6 +4,8 @@ import ffmpeg
 import os
 import shutil
 import sys
+import subprocess
+import json
 
 if len(sys.argv) < 2:
     print("Inserire video input")
@@ -155,6 +157,12 @@ def crea_montaggio(**kwargs):
     ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
     shutil.rmtree(video_dir_tmp, ignore_errors=True)
 
+# Controllo che sia un h264
+streams = subprocess.run(["V:/Ruggi/Videos/Programmi/ffprobe", "-show_streams", "-of", "json", video_dir + video], capture_output=True, text=True)
+streams = json.loads(streams.stdout)
+if streams["streams"][0]["codec_name"] != "h264":
+    print("Codec sbagliato")
+    exit(1)
 
 pall = "03"
 
