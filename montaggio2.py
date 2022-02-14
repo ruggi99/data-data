@@ -190,6 +190,12 @@ for i in range(len(rilev)):
     elif codice[3] == "A":
         attacchi[chiave].append(value)
 
+# Controllo che sia un h264
+streams = subprocess.run(["V:/Ruggi/Videos/Programmi/ffprobe", "-show_streams", "-of", "json", video_dir + video], capture_output=True, text=True)
+streams = json.loads(streams.stdout)
+if streams["streams"][0]["codec_name"] != "h264":
+    print("Codec sbagliato")
+    exit(1)
 
 # Battuta per giocatore
 crea_montaggio(battute, start=0, end=1, nome="Battuta")
