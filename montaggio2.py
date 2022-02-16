@@ -4,6 +4,8 @@ import ffmpeg
 import os
 import shutil
 import sys
+import subprocess
+import json
 
 if len(sys.argv) < 2:
     print("Inserire video input")
