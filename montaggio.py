@@ -222,6 +222,8 @@ crea_montaggio(squadra="a", fond="A", zonaP="4", rot="6", nome="Attacco avversar
 
 # fmt: on
 
+print("\x1b[32mSuccesso!\x1b[0m")
+
 rilev.close()
 elenco.close()
 note.close()
