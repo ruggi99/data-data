@@ -3,17 +3,13 @@ import datetime
 import ffmpeg
 import os
 import shutil
-import sys
 import subprocess
 import json
+import configparser
 
-if len(sys.argv) < 2:
-    print("Inserire video input")
-    exit()
-
-video = sys.argv[1]
-
-data_project_dir = "C:/Data Project/Data Volley 4/Data/"
+data_root_dir = "C:/Data Project/Data Volley 4/"
+data_project_dir = data_root_dir + "Data/"
+data_seasons_dir = data_root_dir + "Seasons/"
 video_dir = "V:/Ruggi/Videos/Bolghera/"
 video_dir_tmp = video_dir + "tmp/"
 
@@ -55,6 +51,19 @@ def hex_to_string(hex):
     for i in range(2, len(hex), 2):
         arr.append(chr(int(hex[i : i + 2], 16)))
     return "".join(arr)
+
+
+config = configparser.ConfigParser()
+config.read(data_root_dir + "dvwin.ini")
+season = config["General"]["Season"]
+filename = hex_to_string(note[0]["FilUltInc"])
+
+config2 = configparser.ConfigParser(strict=False)
+try:
+    config2.read(data_seasons_dir + season + "/Scout/" + filename)
+except configparser.ParsingError:
+    pass
+video = config2["3VIDEO"]["Camera0"]
 
 
 def crea_montaggio(**kwargs):
@@ -126,14 +135,14 @@ def crea_montaggio(**kwargs):
         print(codice)
         if not fine_azione:
             stream = ffmpeg.input(
-                video_dir + video,
+                video,
                 ss=value.Millisec + start,
                 t=t_fine_azione + end,
                 hide_banner=None,
             )
         else:
             stream = ffmpeg.input(
-                video_dir + video,
+                video,
                 ss=value.Millisec + start,
                 to=t_fine_azione + end,
                 hide_banner=None,
@@ -157,8 +166,19 @@ def crea_montaggio(**kwargs):
     ffmpeg.run(stream, cmd="V:/Ruggi/Videos/Programmi/ffmpeg")
     shutil.rmtree(video_dir_tmp, ignore_errors=True)
 
+
 # Controllo che sia un h264
-streams = subprocess.run(["V:/Ruggi/Videos/Programmi/ffprobe", "-show_streams", "-of", "json", video_dir + video], capture_output=True, text=True)
+streams = subprocess.run(
+    [
+        "V:/Ruggi/Videos/Programmi/ffprobe",
+        "-show_streams",
+        "-of",
+        "json",
+        video,
+    ],
+    capture_output=True,
+    text=True,
+)
 streams = json.loads(streams.stdout)
 if streams["streams"][0]["codec_name"] != "h264":
     print("Codec sbagliato")
